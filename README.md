@@ -1,4 +1,4 @@
-# P2P Tutoring Scheduler
+# P2P Tutoring Scheduler/ Peer Link
 
 A web-based peer-to-peer learning platform that enables students to offer tutoring slots and allows peers to browse and book one-on-one learning sessions.
 
@@ -98,8 +98,8 @@ Ensure you have the following installed on your system:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/p2p-tutoring-scheduler.git
-cd p2p-tutoring-scheduler
+git clone  https://github.com/Kathitjoshi/PeerLink.git
+cd PeerLink
 ```
 
 ### 2. Backend Setup
