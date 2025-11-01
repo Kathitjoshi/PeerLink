@@ -1,110 +1,131 @@
-P2P Tutoring Scheduler
+# P2P Tutoring Scheduler
+
 A web-based peer-to-peer learning platform that enables students to offer tutoring slots and allows peers to browse and book one-on-one learning sessions.
-Table of Contents
 
-Features
-Technology Stack
-Prerequisites
-Installation
-Configuration
-Database Setup
-Running the Application
-Project Structure
-API Documentation
-Testing
-Troubleshooting
-Security
-License
-Contributors
+---
 
-Features
-Core Functionality
+## Table of Contents
 
-User Management
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Database Setup](#database-setup)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
+- [License](#license)
+- [Contributors](#contributors)
 
-Role-based registration (Student/Tutor)
-Secure JWT authentication
-Password encryption with bcrypt
-Account deletion with password verification
+---
 
+## Features
 
-Tutor Features
+### Core Functionality
 
-Create and manage tutoring slots
-Set session capacity and duration
-View booked students
-Automatic conflict detection for overlapping slots
-Delete unused slots
+#### User Management
+- Role-based registration (Student/Tutor)
+- Secure JWT authentication
+- Password encryption with bcrypt
+- Account deletion with password verification
 
+#### Tutor Features
+- Create and manage tutoring slots
+- Set session capacity and duration
+- View booked students
+- Automatic conflict detection for overlapping slots
+- Delete unused slots
 
-Student Features
+#### Student Features
+- Browse available tutoring sessions
+- Search and filter by subject and date
+- Book sessions with automatic conflict prevention
+- View and manage bookings
+- Cancel bookings (2-hour policy)
 
-Browse available tutoring sessions
-Search and filter by subject and date
-Book sessions with automatic conflict prevention
-View and manage bookings
-Cancel bookings (2-hour policy)
+#### Calendar System
+- Week and month view options
+- Visual slot availability
+- Real-time updates
+- Color-coded interface
 
+#### Notifications
+- Email confirmations for registrations
+- Booking confirmation emails
+- Cancellation notifications
+- In-app notification system
 
-Calendar System
+---
 
-Week and month view options
-Visual slot availability
-Real-time updates
-Color-coded interface
+## Technology Stack
 
+### Backend
+- Runtime: Node.js (v16+)
+- Framework: Express.js (v4.18.2)
+- Database: PostgreSQL (v12+)
+- Authentication: JSON Web Tokens (JWT)
+- Password Hashing: bcrypt.js
+- Email Service: Nodemailer
+- Validation: Express Validator
 
-Notifications
+### Frontend
+- Library: React (v18.2.0)
+- Build Tool: Vite (v5.0.0)
+- Routing: React Router (v7.9.4)
+- HTTP Client: Axios
+- Styling: Tailwind CSS
+- Icons: Lucide React
 
-Email confirmations for registrations
-Booking confirmation emails
-Cancellation notifications
-In-app notification system
+---
 
+## Prerequisites
 
-
-Technology Stack
-Backend
-
-Runtime: Node.js (v16+)
-Framework: Express.js (v4.18.2)
-Database: PostgreSQL (v12+)
-Authentication: JSON Web Tokens (JWT)
-Password Hashing: bcrypt.js
-Email Service: Nodemailer
-Validation: Express Validator
-
-Frontend
-
-Library: React (v18.2.0)
-Build Tool: Vite (v5.0.0)
-Routing: React Router (v7.9.4)
-HTTP Client: Axios
-Styling: Tailwind CSS
-Icons: Lucide React
-
-Prerequisites
 Ensure you have the following installed on your system:
 
-Node.js (v16 or higher) - Download
-PostgreSQL (v12 or higher) - Download
-npm (comes with Node.js)
-Git (optional) - Download
+- Node.js (v16 or higher) - [Download](https://nodejs.org/)
+- PostgreSQL (v12 or higher) - [Download](https://www.postgresql.org/download/)
+- npm (comes with Node.js)
+- Git (optional) - [Download](https://git-scm.com/)
 
-Installation
-1. Clone the Repository
-bashgit clone https://github.com/yourusername/p2p-tutoring-scheduler.git
+---
+
+## Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/p2p-tutoring-scheduler.git
 cd p2p-tutoring-scheduler
-2. Backend Setup
-bashcd backend
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
 npm install
-3. Frontend Setup
-bashcd ../frontend
+```
+
+### 3. Frontend Setup
+
+```bash
+cd ../frontend
 npm install
-Configuration
-Backend Environment Variables
-Create a .env file in the backend directory:
-env# Application Configuration
+```
+
+---
+
+## Configuration
+
+### Backend Environment Variables
+
+Create a `.env` file in the `backend` directory:
+
+```env
+# Application Configuration
 APP_NAME=P2P Tutoring Scheduler
 APP_VERSION=1.0.0
 
@@ -133,44 +154,74 @@ EMAIL_FROM=noreply@p2ptutoring.com
 # Other Configuration
 FRONTEND_URL=http://localhost:3000
 BCRYPT_ROUNDS=10
-Important Notes:
+```
 
-Replace DB_PASSWORD with your PostgreSQL password
-Generate a strong random string for JWT_SECRET
-Use Gmail App Password for SMTP_PASSWORD (not regular password)
+#### Important Notes:
+- Replace `DB_PASSWORD` with your PostgreSQL password
+- Generate a strong random string for `JWT_SECRET`
+- Use Gmail App Password for `SMTP_PASSWORD` (not regular password)
+  - Get it from: https://myaccount.google.com/apppasswords
 
-Get it from: https://myaccount.google.com/apppasswords
+### Frontend Environment Variables
 
+Create a `.env` file in the `frontend` directory (optional):
 
-
-Frontend Environment Variables
-Create a .env file in the frontend directory (optional):
-envVITE_API_URL=http://localhost:5000/api
+```env
+VITE_API_URL=http://localhost:5000/api
 VITE_APP_NAME=P2P Tutoring Scheduler
-Database Setup
-1. Create Database
+```
+
+---
+
+## Database Setup
+
+### 1. Create Database
+
 Open PostgreSQL terminal:
-bashpsql -U postgres
+
+```bash
+psql -U postgres
+```
+
 Execute:
-sqlCREATE DATABASE p2p_tutoring;
+
+```sql
+CREATE DATABASE p2p_tutoring;
 \c p2p_tutoring
-2. Run Schema Migration
+```
+
+### 2. Run Schema Migration
+
 From the project root:
-bashpsql -U postgres -d p2p_tutoring -f backend/models/schema.sql
-Or manually copy and paste the SQL from backend/models/schema.sql into pgAdmin Query Tool.
-3. Verify Tables
-sql\dt
+
+```bash
+psql -U postgres -d p2p_tutoring -f backend/models/schema.sql
+```
+
+Or manually copy and paste the SQL from `backend/models/schema.sql` into pgAdmin Query Tool.
+
+### 3. Verify Tables
+
+```sql
+\dt
+```
+
 You should see:
+- users
+- slots
+- bookings
+- notifications
 
-users
-slots
-bookings
-notifications
+---
 
-Running the Application
-Development Mode
-Start Backend Server
-bashcd backend
+## Running the Application
+
+### Development Mode
+
+#### Start Backend Server
+
+```bash
+cd backend
 npm run dev
 ```
 
@@ -180,9 +231,14 @@ Database connected successfully
 Server running on port 5000
 http://localhost:5000
 Health check: http://localhost:5000/api/health
-Start Frontend Server
+```
+
+#### Start Frontend Server
+
 Open a new terminal:
-bashcd frontend
+
+```bash
+cd frontend
 npm run dev
 ```
 
@@ -190,18 +246,32 @@ Expected output:
 ```
 VITE v5.0.0  ready in 500 ms
 Local:   http://localhost:3000/
-Access Application
-Open browser and navigate to: http://localhost:3000
-Production Mode
-Build Frontend
-bashcd frontend
+```
+
+#### Access Application
+
+Open browser and navigate to: **http://localhost:3000**
+
+### Production Mode
+
+#### Build Frontend
+
+```bash
+cd frontend
 npm run build
-Start Backend
-bashcd backend
+```
+
+#### Start Backend
+
+```bash
+cd backend
 npm start
 ```
 
+---
+
 ## Project Structure
+
 ```
 p2p-tutoring-scheduler/
 ├── backend/
@@ -254,6 +324,8 @@ p2p-tutoring-scheduler/
 └── README.md
 ```
 
+---
+
 ## API Documentation
 
 ### Authentication Endpoints
@@ -263,11 +335,12 @@ p2p-tutoring-scheduler/
 POST /api/auth/register
 Content-Type: application/json
 
+Body:
 {
   "name": "John Doe",
   "email": "john@example.com",
   "password": "password123",
-  "role": "student" or "tutor"
+  "role": "student" | "tutor"
 }
 
 Response: 201 Created
@@ -287,6 +360,7 @@ Response: 201 Created
 POST /api/auth/login
 Content-Type: application/json
 
+Body:
 {
   "email": "john@example.com",
   "password": "password123"
@@ -318,6 +392,7 @@ POST /api/slots
 Authorization: Bearer {token}
 Content-Type: application/json
 
+Body:
 {
   "subject": "Mathematics",
   "description": "Calculus basics",
@@ -373,6 +448,7 @@ POST /api/bookings
 Authorization: Bearer {token}
 Content-Type: application/json
 
+Body:
 {
   "slot_id": 1
 }
@@ -404,69 +480,66 @@ DELETE /api/account/delete
 Authorization: Bearer {token}
 Content-Type: application/json
 
+Body:
 {
   "password": "user_password"
 }
 
 Response: 200 OK
-Testing
-Test User Accounts
+```
+
+---
+
+## Testing
+
+### Test User Accounts
+
 Create test accounts for development:
-Tutor Account:
 
-Name: John Tutor
-Email: tutor@test.com
-Password: password123
-Role: Tutor
+#### Tutor Account:
+- Name: John Tutor
+- Email: tutor@test.com
+- Password: password123
+- Role: Tutor
 
-Student Account:
+#### Student Account:
+- Name: Jane Student
+- Email: student@test.com
+- Password: password123
+- Role: Student
 
-Name: Jane Student
-Email: student@test.com
-Password: password123
-Role: Student
+### Manual Testing Workflow
 
-Manual Testing Workflow
+#### 1. Register as Tutor
+- Create account
+- Create 2-3 tutoring slots with different subjects
+- Verify slots appear in "My Slots"
 
-Register as Tutor
+#### 2. Register as Student
+- Create account
+- Browse available slots
+- Book a session
+- Verify booking appears in "My Bookings"
 
-Create account
-Create 2-3 tutoring slots with different subjects
-Verify slots appear in "My Slots"
+#### 3. Test Calendar
+- Switch between week/month views
+- Verify all slots appear on correct dates
+- Check that cancelled slots don't appear
 
+#### 4. Test Cancellation
+- Cancel a booking (must be >2 hours before session)
+- Verify email notifications sent
+- Check slot becomes available again
 
-Register as Student
+#### 5. Test Security
+- Try accessing tutor routes as student (should fail)
+- Try accessing student routes as tutor (should fail)
+- Test token expiration
 
-Create account
-Browse available slots
-Book a session
-Verify booking appears in "My Bookings"
+### Database Verification
 
-
-Test Calendar
-
-Switch between week/month views
-Verify all slots appear on correct dates
-Check that cancelled slots don't appear
-
-
-Test Cancellation
-
-Cancel a booking (must be >2 hours before session)
-Verify email notifications sent
-Check slot becomes available again
-
-
-Test Security
-
-Try accessing tutor routes as student (should fail)
-Try accessing student routes as tutor (should fail)
-Test token expiration
-
-
-
-Database Verification
-sql-- View all users
+```sql
+-- View all users
 SELECT id, name, email, role FROM users;
 
 -- View all slots
@@ -477,22 +550,36 @@ SELECT b.id, u.name as student, s.subject, b.status
 FROM bookings b
 JOIN users u ON b.student_id = u.id
 JOIN slots s ON b.slot_id = s.id;
-Troubleshooting
-Common Issues
-Database Connection Error
-Problem: Database connection error
-Solution:
-bash# Check if PostgreSQL is running
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+#### Database Connection Error
+
+**Problem:** `Database connection error`
+
+**Solution:**
+```bash
+# Check if PostgreSQL is running
 sudo systemctl status postgresql
 
 # Restart PostgreSQL
 sudo systemctl restart postgresql
 
 # Verify credentials in .env file
-Port Already in Use
-Problem: Port 5000 is already in use
-Solution:
-bash# Find process using port
+```
+
+#### Port Already in Use
+
+**Problem:** `Port 5000 is already in use`
+
+**Solution:**
+```bash
+# Find process using port
 lsof -i :5000
 
 # Kill the process
@@ -500,116 +587,125 @@ kill -9 <PID>
 
 # Or change PORT in .env
 PORT=5001
-Email Not Sending
-Problem: Emails not being delivered
-Solution:
+```
 
-Verify Gmail App Password (not regular password)
-Enable 2-Factor Authentication on Gmail
-Check SMTP credentials in .env
-Review backend logs for email errors
+#### Email Not Sending
 
-Cannot Login After Registration
-Problem: Login fails immediately after registration
-Solution:
+**Problem:** Emails not being delivered
 
-Check browser console for errors (F12)
-Verify token is stored in localStorage
-Check backend logs for authentication errors
-Clear browser cache and try again
+**Solution:**
+- Verify Gmail App Password (not regular password)
+- Enable 2-Factor Authentication on Gmail
+- Check SMTP credentials in .env
+- Review backend logs for email errors
 
-Slots Not Appearing in Calendar
-Problem: Created slots don't show in calendar
-Solution:
+#### Cannot Login After Registration
 
-Verify slot start_time is in the future
-Check slot status is 'available'
-Clear browser cache
-Check browser console for API errors
+**Problem:** Login fails immediately after registration
 
-Security
-Implemented Security Measures
+**Solution:**
+- Check browser console for errors (F12)
+- Verify token is stored in localStorage
+- Check backend logs for authentication errors
+- Clear browser cache and try again
 
-Authentication & Authorization
+#### Slots Not Appearing in Calendar
 
-JWT-based stateless authentication
-Role-based access control (RBAC)
-Password hashing with bcrypt (10 rounds)
-Session expiration (7 days default)
+**Problem:** Created slots don't show in calendar
 
+**Solution:**
+- Verify slot start_time is in the future
+- Check slot status is 'available'
+- Clear browser cache
+- Check browser console for API errors
 
-Input Validation
+---
 
-Express Validator for all inputs
-SQL injection prevention (parameterized queries)
-XSS protection through input sanitization
+## Security
 
+### Implemented Security Measures
 
-Password Security
+#### 1. Authentication & Authorization
+- JWT-based stateless authentication
+- Role-based access control (RBAC)
+- Password hashing with bcrypt (10 rounds)
+- Session expiration (7 days default)
 
-Minimum 6 characters required
-Bcrypt hashing before storage
-Password verification for account deletion
+#### 2. Input Validation
+- Express Validator for all inputs
+- SQL injection prevention (parameterized queries)
+- XSS protection through input sanitization
 
+#### 3. Password Security
+- Minimum 6 characters required
+- Bcrypt hashing before storage
+- Password verification for account deletion
 
-API Security
+#### 4. API Security
+- CORS enabled for trusted origins
+- Rate limiting recommended for production
+- HTTPS ready (TLS 1.2+)
 
-CORS enabled for trusted origins
-Rate limiting recommended for production
-HTTPS ready (TLS 1.2+)
+#### 5. Data Protection
+- Sensitive data excluded from API responses
+- Cascade delete for user data
+- Secure token storage in localStorage
 
+### Security Best Practices for Production
 
-Data Protection
+1. Use environment-specific `.env` files
+2. Enable HTTPS/TLS
+3. Implement rate limiting (express-rate-limit)
+4. Add request logging (morgan, winston)
+5. Use helmet.js for HTTP headers
+6. Implement CSRF protection
+7. Regular security audits
+8. Keep dependencies updated
 
-Sensitive data excluded from API responses
-Cascade delete for user data
-Secure token storage in localStorage
+---
 
+## License
 
-
-Security Best Practices for Production
-
-Use environment-specific .env files
-Enable HTTPS/TLS
-Implement rate limiting (express-rate-limit)
-Add request logging (morgan, winston)
-Use helmet.js for HTTP headers
-Implement CSRF protection
-Regular security audits
-Keep dependencies updated
-
-License
 This project is licensed under the MIT License - see the LICENSE file for details.
-Contributors
 
-Project Team 4
+---
 
-Kathit Joshi (PES2UG23CS264)
-Kavyansh Jain (PES2UG23CS268)
-Kavin (PES2UG23CS267)
-Anirudh Kedarisetty (PES2UG23CS271)
+## Contributors
 
+### Project Team 4
+- Kathit Joshi (PES2UG23CS264)
+- Kavyansh Jain (PES2UG23CS268)
+- Kavin (PES2UG23CS267)
+- Anirudh Kedarisetty (PES2UG23CS271)
 
+### Academic Information
+- **Instructor:** Prof. Nandhi Kesavan
+- **Institution:** PES University
+- **Course:** Software Architecture and Design
+- **Date:** September 2025
 
-Instructor: Prof. Nandhi Kesavan
-Institution: PES University
-Course: Software Architecture and Design
-Date: September 2025
-Acknowledgments
+---
 
-React team for the excellent frontend library
-Express.js community for the robust backend framework
-PostgreSQL for the reliable database system
-Tailwind CSS for the utility-first styling approach
+## Acknowledgments
 
-Support
+- React team for the excellent frontend library
+- Express.js community for the robust backend framework
+- PostgreSQL for the reliable database system
+- Tailwind CSS for the utility-first styling approach
+
+---
+
+## Support
+
 For issues, questions, or contributions, please open an issue on GitHub or contact the development team.
-Version History
 
-v1.0.0 (September 2025)
+---
 
-Initial release
-Core booking functionality
-Calendar integration
-Email notifications
-Account management
+## Version History
+
+### v1.0.0 (September 2025)
+- Initial release
+- Core booking functionality
+- Calendar integration
+- Email notifications
+- Account management
