@@ -45,12 +45,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create Indexes for Performance
-CREATE INDEX idx_slots_tutor ON slots(tutor_id);
-CREATE INDEX idx_slots_time ON slots(start_time, end_time);
-CREATE INDEX idx_bookings_student ON bookings(student_id);
-CREATE INDEX idx_bookings_slot ON bookings(slot_id);
-CREATE INDEX idx_notifications_user ON notifications(user_id);
+
 
 
 SELECT * FROM bookings ;
