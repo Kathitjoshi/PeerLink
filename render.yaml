@@ -1,0 +1,94 @@
+services:
+  # ─── BACKEND (Express.js API server) ─────────────────────────
+  - type: web
+    name: peerlink-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      # App
+      - key: APP_NAME
+        value: P2P Tutoring Scheduler
+      - key: APP_VERSION
+        value: 1.0.0
+      - key: APP_DESCRIPTION
+        value: Peer-to-Peer Learning Scheduler Platform
+
+      # Server
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+
+      # Database — these pull from the Render database below automatically
+      - key: DB_HOST
+        fromDatabase:
+          name: peerlink-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: peerlink-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: peerlink-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: peerlink-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: peerlink-db
+          property: password
+
+      # JWT
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 7d
+
+      # Email — SMTP_USER and SMTP_PASSWORD are set manually in dashboard (see Part 3)
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        value: P2P Tutoring <noreply@p2ptutoring.com>
+
+      # Other
+      - key: FRONTEND_URL
+        value: https://peerlink-frontend.onrender.com
+      - key: BCRYPT_ROUNDS
+        value: 10
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+      - key: FEATURE_EMAIL_ENABLED
+        value: true
+      - key: CANCELLATION_WINDOW_HOURS
+        value: 2
+
+  # ─── FRONTEND (React + Vite static site) ─────────────────────
+  - type: web
+    name: peerlink-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://peerlink-backend.onrender.com/api
+      - key: VITE_APP_NAME
+        value: P2P Tutoring Scheduler
+
+# ─── DATABASE (PostgreSQL) ────────────────────────────────────
+databases:
+  - name: peerlink-db
+    databaseName: p2p_tutoring
+    user: peerlink
+    plan: free
