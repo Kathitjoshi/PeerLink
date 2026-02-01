@@ -1,13 +1,26 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-
 const authRoutes = require('./routes/auth');
 const slotsRoutes = require('./routes/slots');
 const bookingsRoutes = require('./routes/bookings');
 const accountRoutes = require('./routes/account');
+const pool = require('./config/database');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
+
+// Auto-run schema on startup (safe to run multiple times)
+(async () => {
+  try {
+    const schema = fs.readFileSync(path.join(__dirname, 'models', 'schema.sql'), 'utf8');
+    await pool.query(schema);
+    console.log('✅ Schema loaded successfully');
+  } catch (err) {
+    console.error('❌ Schema load error:', err.message);
+  }
+})();
 
 // Middleware
 app.use(cors());
@@ -49,6 +62,14 @@ app._router.stack.forEach((r) => {
   }
 });
 
+// Serve React frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
+  });
+}
+
 // 404 handler - MUST be after all routes
 app.use((req, res) => {
   console.log('❌ 404 - Route not found:', req.method, req.path);
@@ -62,7 +83,6 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 ${process.env.APP_NAME || 'Server'} running on port ${PORT}`);
   console.log(`📍 http://localhost:${PORT}`);
