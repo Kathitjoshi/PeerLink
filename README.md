@@ -4,6 +4,11 @@ A web-based peer-to-peer learning platform that enables students to offer tutori
 
 ---
 
+<img width="780" height="736" alt="image" src="https://github.com/user-attachments/assets/681446a1-0356-417c-8f31-fadabd30b287" />
+
+<img width="1564" height="852" alt="image" src="https://github.com/user-attachments/assets/c94bca5e-15ca-4aac-bb13-f5b155ce5183" />
+
+
 ## Table of Contents
 
 - [Features](#features)
